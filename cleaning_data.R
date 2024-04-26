@@ -53,6 +53,14 @@ cleaned_crime_data$DATE <- ifelse(is.na(cleaned_crime_data$DATE) | cleaned_crime
 # Removing rows with "N/A" in the DATE column
 cleaned_crime_data <- subset(cleaned_crime_data, DATE != "N/A")
 
+# Convert 'DATE' column to Date format with MM/DD/YYYY format
+cleaned_crime_data$DATE <- as.Date(cleaned_crime_data$DATE, format = "%m/%d/%Y")
+
+# Extract years from 'DATE' column
+cleaned_crime_data$YEARS <- format(cleaned_crime_data$DATE, "%Y")
+
+# Rearrange columns to place 'YEARS' column after 'DATE' column
+cleaned_crime_data <- cleaned_crime_data[, c("DATE", "YEARS", setdiff(names(cleaned_crime_data), c("DATE", "YEARS")))]
 
 # Checking for missing values in the dataset
 if (any(is.na(cleaned_crime_data))) {
@@ -80,6 +88,7 @@ print(cleaned_crime_data[duplicate_rows, ]) #(Displayed results but were not dup
 # Renaming column names
 cleaned_crime_data <- cleaned_crime_data %>%
   rename(date = DATE,
+         years = YEARS,
          offense = OFFENSE,
          motivation_bias = Motivation,
          district_number = DIST,
@@ -102,7 +111,7 @@ cleaned_crime_data$motivation_bias <- ifelse(cleaned_crime_data$motivation_bias 
                                              "Xenophobic", 
                                              cleaned_crime_data$motivation_bias)
 
-cleaned_crime_data$motivation_bias <- ifelse(cleaned_crime_data$motivation_bias %in% c("ANTI-ISLAMIC/MUSLIM", "ANTI-OTHER RELIGION", "ANTI-MULTIPLE RELIGIONS/GROUPS", "ANTI-PROTESTANT", "ANTI-CATHOLIC", "ANTI-OTHER CHRISTIAN"), 
+cleaned_crime_data$motivation_bias <- ifelse(cleaned_crime_data$motivation_bias %in% c("ANTI-ISLAMIC/MUSLIM", "ANTI-OTHER RELIGION", "ANTI-MULTIPLE RELIGIONS/GROUPS", "ANTI-PROTESTANT", "ANTI-CATHOLIC", "ANTI-OTHER CHRISTIAN","ANTI-EASTERN ORTHODOX (GREEK, RUSSIAN)"), 
                                              "Religious Supremacist", 
                                              cleaned_crime_data$motivation_bias)
 
