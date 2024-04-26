@@ -1,5 +1,5 @@
 # Creating a contingency table
-contingency_table <- table(cleaned_crime_data$offense, cleaned_crime_data$motivation_bias)
+contingency_table <- table(cleaned$offense, cleaned_crime_data$motivation_bias)
 
 # Converting the contingency table to a data frame
 contingency_df <- as.data.frame.matrix(contingency_table)
