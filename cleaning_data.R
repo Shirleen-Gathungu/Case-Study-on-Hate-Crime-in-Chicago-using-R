@@ -30,7 +30,7 @@ print("Columns with missing data:")
 print(columns_with_missing)
 
 #Removing unnecessary columns
-cleaned_crime_data <- crime_data[, !(names(crime_data) %in% c("RD", "TIME","UCR DODE", "CPD Area", "BEAT", "Victims", "Arrested", "Juveniles", "Adults", "Disposition"))]
+cleaned_crime_data <- crime_data[, !(names(crime_data) %in% c("RD", "TIME","UCR DODE", "CPD Area","DIST", "BEAT", "Victims", "Arrested", "Juveniles", "Adults", "Disposition"))]
 View(cleaned_crime_data)
 
 
@@ -91,7 +91,6 @@ cleaned_crime_data <- cleaned_crime_data %>%
          years = YEARS,
          offense = OFFENSE,
          motivation_bias = Motivation,
-         district_number = DIST,
          community = Community)
 
 
@@ -179,7 +178,7 @@ capitalize_first_letter <- function(x) {
 }
 
 # Apply the function to columns with string values
-columns_to_capitalize <- c("date", "offense", "motivation_bias", "district_number", "community")
+columns_to_capitalize <- c("date", "offense", "motivation_bias", "community")
 cleaned_crime_data[columns_to_capitalize] <- lapply(cleaned_crime_data[columns_to_capitalize], capitalize_first_letter)
 
 # Save cleaned crime data as a CSV file
