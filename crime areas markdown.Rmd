@@ -1,0 +1,62 @@
+---
+title: "crime areas"
+author: "Shirleen Gathungu"
+date: "2024-04-27"
+output:
+  pdf_document:
+    keep_tex: true  
+    toc: true      
+    number_sections: true  
+    always_allow_html: true
+
+---
+
+## loading libraries
+```{r}
+library(plotly)
+library(ggplot2)
+library(dplyr)
+```
+### dataset
+```{r}
+# Load cleaned crime data
+cleaned_crime_data <- read.csv("cleaned_crime_data.csv")
+
+# Ensure the structure of the data
+str(cleaned_crime_data)
+```
+
+### Contigency table
+```{r}
+# Creating a contingency table
+contingency_table <- table(cleaned_crime_data$offense, cleaned_crime_data$district_number, cleaned_crime_data$community)
+
+# Converting the contingency table to a data frame
+contingency_df <- as.data.frame.table(contingency_table)
+
+# Renaming the columns
+names(contingency_df) <- c("Offense", "District_Number", "Community", "Count")
+
+# Converting District_Number to numeric
+contingency_df$District_Number <- as.numeric(contingency_df$District_Number)
+
+# Arranging the District_Number column from smallest to largest
+contingency_df <- contingency_df %>%
+  arrange(District_Number)
+
+```
+
+### Interactive plot
+```{r}
+# Creating an interactive plot
+plot <- plot_ly(contingency_df, x = ~District_Number, y = ~Community, z = ~Count, type = "heatmap",
+                colorscale = "Viridis", text = ~paste("Offense:", Offense, "<br>District Number:", District_Number, "<br>Community:", Community, "<br>Count:", Count),
+                hoverinfo = "text")
+
+plot <- plot %>% layout(title = "Offenses Occurring in Different Areas",
+                        xaxis = list(title = "District Number"),
+                        yaxis = list(title = "Community"))
+
+# Show plot
+plot
+```

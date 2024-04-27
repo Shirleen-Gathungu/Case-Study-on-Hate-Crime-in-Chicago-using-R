@@ -181,3 +181,6 @@ capitalize_first_letter <- function(x) {
 # Apply the function to columns with string values
 columns_to_capitalize <- c("date", "offense", "motivation_bias", "district_number", "community")
 cleaned_crime_data[columns_to_capitalize] <- lapply(cleaned_crime_data[columns_to_capitalize], capitalize_first_letter)
+
+# Save cleaned crime data as a CSV file
+write.csv(cleaned_crime_data, "cleaned_crime_data.csv", row.names = FALSE)
